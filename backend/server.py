@@ -274,9 +274,15 @@ async def get_categories():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+class CategoryCreate(BaseModel):
+    name: str
+    description: str = ""
+
 @app.post("/api/categories", response_model=Category)
-async def create_category(name: str, description: str = ""):
+async def create_category(category: CategoryCreate):
     """Create a new category"""
+    name = category.name
+    description = category.description
     try:
         category_doc = {
             'id': str(uuid.uuid4()),
